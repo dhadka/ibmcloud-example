@@ -21,4 +21,8 @@ jobs:
       run: |
         wget -O ibmcloud.tgz "https://clis.cloud.ibm.com/download/bluemix-cli/1.1.0/linux64/archive"
         tar -xzf ibmcloud.tgz
-        ls .
+        echo "::add-path::~/IBM_Cloud_CLI"
+
+    - name: Use ibmcloud
+      run: |
+       ibmcloud -h
