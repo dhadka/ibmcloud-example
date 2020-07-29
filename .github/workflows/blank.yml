@@ -25,4 +25,5 @@ jobs:
 
     - name: Use ibmcloud
       run: |
-       ibmcloud -h
+        echo $PATH
+        ibmcloud -h
