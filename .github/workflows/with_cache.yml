@@ -1,0 +1,36 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI with Cache
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Cache ibmcloud
+      id: cache-ibmcloud
+      uses: actions/cache@v2
+      with:
+        path: IBM_Cloud_CLI
+        key: ${{ runner.os }}-ibmcloud
+
+    - name: Setup ibmcloud
+      if: steps.cache-ibmcloud.outputs.cache-hit != 'true'
+      run: |
+        wget -O ibmcloud.tgz "https://clis.cloud.ibm.com/download/bluemix-cli/1.1.0/linux64/archive"
+        tar -xzf ibmcloud.tgz
+        echo "::add-path::$(pwd)/IBM_Cloud_CLI"
+
+    - name: Use ibmcloud
+      run: |
+        ibmcloud -h
